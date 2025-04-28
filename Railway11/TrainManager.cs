@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,18 +51,21 @@ namespace Railway11
                     if(Engines.Find(x => x.Id == id) != null)
                     {
                         int remove = Engines.FindIndex(x => x.Id == id);
+                        TrainSetRemover(Engines[remove].Id, 0);
                         Engines.RemoveAt(remove);
                     }
                     //passenger check
                     else if(PassengerCars.Find(x => x.Id == id) != null)
                     {
                         int remove = PassengerCars.FindIndex(x => x.Id == id);
+                        TrainSetRemover(PassengerCars[remove].Id, 1);
                         PassengerCars.RemoveAt(remove);
                     }
                     //freight 
                     else if (FreightCars.Find(x => x.Id == id) != null)
                     {
                         int remove = FreightCars.FindIndex(x => x.Id == id);
+                        TrainSetRemover(FreightCars[remove].Id, 2);
                         FreightCars.RemoveAt(remove);
                     }
                     else
@@ -73,6 +77,42 @@ namespace Railway11
             catch (Exception e)
             {
                 Console.WriteLine($"{e.Message}");
+            }
+        }
+
+        private void TrainSetRemover(string id, int type)
+        {
+            switch (type)
+            {
+                case 0:
+                    foreach (var train in Trains)
+                    {
+                        if (train.Engine.Id == id)
+                        {
+                            Trains.Remove(train);
+                        }
+                    }
+                    break;
+                case 1:
+                    foreach (var train in Trains)
+                    {
+                        if (train.PCarts.Find(x => x.Id == id) != null)
+                        {
+                            train.PCarts.Remove(train.PCarts.Find(x => x.Id == id));
+                        }
+                    }
+                    break;
+                case 2:
+                    foreach (var train in Trains)
+                    {
+                        if (train.FCarts.Find(x => x.Id == id) != null)
+                        {
+                            train.FCarts.Remove(train.FCarts.Find(x => x.Id == id));
+                        }
+                    }
+                    break;
+                default:
+                    throw new Exception("Train not found");
             }
         }
 
