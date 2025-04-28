@@ -76,7 +76,7 @@ namespace Railway11
             }
         }
 
-        public bool CoupleSet(Engine engine, List<PassengerCar> passengers, List<FreightCar> freights)
+        public bool CoupleSet(Engine engine, List<PassengerCar>? passengers, List<FreightCar>? freights)
         {
             try
             {
@@ -149,14 +149,18 @@ namespace Railway11
             }
         }
 
-        public Vehicle? SearchSet(string idEngine)
+        public Vehicle? SearchSet(string? idEngine)
         {
+            if (string.IsNullOrEmpty(idEngine))
+            {
+                return null;
+            }
             return Trains.Find(x => x.Engine.Id == idEngine) == null ? null : Trains.Find(x => x.Engine.Id == idEngine);
         }
 
         public void Print()
         {
-
+            Console.WriteLine("I like trains :)");
         }
     }
 }
